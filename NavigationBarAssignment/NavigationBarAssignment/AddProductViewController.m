@@ -25,66 +25,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    Do any additional setup after loading the view, typically from a nib.
-//    UIButton *button=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    [button setFrame:CGRectMake(52, 252, 215, 40)];
-//    [button setTitle:@"Login" forState:UIControlStateNormal];
-//    [button setExclusiveTouch:YES];
-//    
-//    
-//    [self.view addSubview:button];
-    
-    
-    
     
 }
-/** Performs action on click of button save
- * \param sender The id of save button
- * \returns Returns action on click of button
- */
-- (IBAction)saveButtonTapped:(id)sender {
-    NSString *productName=textFieldProductName.text;
-    NSString *productCategory=textFieldProductCategory.text;
-    
-    if([self isAlphaOnly:productName]==NO || [self isAlphaOnly:productCategory]== NO){
-        NSLog(@"Only character set allowed.");
-    }
-    if([self isNumericOnly:textFieldProductPrice.text]==NO ){
-        NSLog(@"Number ranging from 10 to 99999 and after decimal point only two numbers.");
-    }
-    if([self isWhitespace:productName]== NO){
-        [textFieldProductName becomeFirstResponder];
-    }
-    else if([self isWhitespace:textFieldProductPrice.text]== NO){
-        [textFieldProductPrice becomeFirstResponder];
-    }
-    else if([self isWhitespace:productCategory]== NO){
-        [textFieldProductCategory becomeFirstResponder];
-    }
-    else{
-        [self saveProduct];
-    }
-
-}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
--(void)saveProduct{
-    //ViewController *viewController=[self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-    //[self.navigationController popToViewController:viewController animated:YES];
-    Products *product=[[Products alloc]init];
-    product.productName=textFieldProductName.text;
-    product.productPrice=[textFieldProductPrice.text floatValue];
-    product.productCategory=textFieldProductCategory.text;
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate.arrayProducts addObject:product];
-    
-    //[[UIScreen mainScreen] bounds].size.wi
-    
-    [self.navigationController popViewControllerAnimated:YES];
 }
 /** Checks for extreme whitespaces and trims it
  * \param name The input whose extreme whitespaces are to be checked
@@ -120,29 +65,57 @@
     return [regexTest evaluateWithObject:input];
 }
 /** Clears all text fields
- * \returns Returns nothing
  */
 -(void)clearTextField{
     textFieldProductName.text=@"";
     textFieldProductPrice.text=@"";
     textFieldProductCategory.text=@"";
 }
+/** Saves product to the array
+ */
+-(void)saveProduct{
+    Products *product=[[Products alloc]init];
+    product.productName=textFieldProductName.text;
+    product.productPrice=[textFieldProductPrice.text floatValue];
+    product.productCategory=textFieldProductCategory.text;
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate.arrayProducts addObject:product];
+}
+/** Pops previous view controller
+ */
+-(void)popViewController{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+/** Validates textfields and saves that to array on click of button save
+ * \param sender The id of save button
+ * \returns Returns action on click of button
+ */
+- (IBAction)saveButtonTapped:(id)sender {
+    NSString *productName=textFieldProductName.text;
+    NSString *productCategory=textFieldProductCategory.text;
+    if([self isAlphaOnly:productName]==NO || [self isAlphaOnly:productCategory]== NO){
+        NSLog(@"Only character set allowed.");
+    }
+    if([self isNumericOnly:textFieldProductPrice.text]==NO ){
+        NSLog(@"Number ranging from 10 to 99999 and after decimal point only two numbers.");
+    }
+    if([self isWhitespace:productName]== NO){
+        [textFieldProductName becomeFirstResponder];
+    }
+    else if([self isWhitespace:textFieldProductPrice.text]== NO){
+        [textFieldProductPrice becomeFirstResponder];
+    }
+    else if([self isWhitespace:productCategory]== NO){
+        [textFieldProductCategory becomeFirstResponder];
+    }
+    else{
+        [self saveProduct];
+        [self popViewController];
+    }
+}
+
+
 @end
 
-
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-//    
-//    if (buttonIndex==0) {
-//        Products *product=[[Products alloc]init];
-//        product.productName=textFieldProductName.text;
-//        product.productPrice=[textFieldProductPrice.text floatValue];
-//        product.productCategory=textFieldProductCategory.text;
-//        [arrayProducts addObject:product];
-//        for( product in arrayProducts){
-//            NSLog(@"Product Name is %@ ,product price is %.02f and product category is %@",product.productName,product.productPrice,product.productCategory);
-//        }
-//        
-//    }
-//}
 
 
