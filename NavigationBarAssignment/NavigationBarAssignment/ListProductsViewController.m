@@ -102,7 +102,6 @@
     UIButton *buttonEachProduct = [UIButton buttonWithType: UIButtonTypeRoundedRect];
     buttonEachProduct.frame = CGRectMake(10, yvalue, 250, 60);
     [buttonEachProduct setTitle:@"" forState:UIControlStateNormal];
-    buttonEachProduct.backgroundColor=[UIColor redColor];
     [buttonEachProduct addTarget:self action:@selector(buttonEachProductTapped:) forControlEvents:UIControlEventTouchUpInside];
     return buttonEachProduct;
 }
