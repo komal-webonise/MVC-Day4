@@ -1,26 +1,16 @@
 //
 //  AddProductViewController.m
 //  NavigationBarAssignment
-//
-//  Created by komal lunkad on 19/09/16.
-//  Copyright © 2016 komal lunkad. All rights reserved.
-//
-
 #import "AddProductViewController.h"
 #import "ListProductsViewController.h"
 #import "Products.h"
 #import "AppDelegate.h"
 @interface  AddProductViewController (){
-    
     IBOutlet UITextField *textFieldProductName;
-    
     IBOutlet UITextField *textFieldProductPrice;
-    
-    
     IBOutlet UITextField *textFieldProductCategory;
 }
 @end
-
 @implementation AddProductViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,13 +26,12 @@
  * \returns Returns yes if whitespaces are  present else it returns no
  */
 -(BOOL)isWhitespace:(NSString*)name{
-    NSString *trimmedName=[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if(trimmedName.length==0){
+    NSString *trimmedName = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if(trimmedName.length == 0){
         return NO;
     }
     return YES;
 }
-
 /** Checks for alphabets and other characters in the string
  * \param input The input whose content character set is to be checked
  * \returns Returns yes if alphabets are only present else it returns no
@@ -67,17 +56,17 @@
 /** Clears all text fields
  */
 -(void)clearTextField{
-    textFieldProductName.text=@"";
-    textFieldProductPrice.text=@"";
-    textFieldProductCategory.text=@"";
+    textFieldProductName.text = @"";
+    textFieldProductPrice.text = @"";
+    textFieldProductCategory.text = @"";
 }
 /** Saves product to the array
  */
 -(void)saveProduct{
-    Products *product=[[Products alloc]init];
-    product.productName=textFieldProductName.text;
-    product.productPrice=[textFieldProductPrice.text floatValue];
-    product.productCategory=textFieldProductCategory.text;
+    Products *product = [[Products alloc]init];
+    product.productName = textFieldProductName.text;
+    product.productPrice = [textFieldProductPrice.text floatValue];
+    product.productCategory = textFieldProductCategory.text;
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.arrayProducts addObject:product];
 }
@@ -93,19 +82,28 @@
 - (IBAction)saveButtonTapped:(id)sender {
     NSString *productName=textFieldProductName.text;
     NSString *productCategory=textFieldProductCategory.text;
-    if([self isAlphaOnly:productName]==NO || [self isAlphaOnly:productCategory]== NO){
-        NSLog(@"Only character set allowed.");
-    }
-    if([self isNumericOnly:textFieldProductPrice.text]==NO ){
-        NSLog(@"Number ranging from 10 to 99999 and after decimal point only two numbers.");
-    }
-    if([self isWhitespace:productName]== NO){
+    if(![self isWhitespace:productName]){
         [textFieldProductName becomeFirstResponder];
     }
-    else if([self isWhitespace:textFieldProductPrice.text]== NO){
+    else if(![self isWhitespace:textFieldProductPrice.text]){
         [textFieldProductPrice becomeFirstResponder];
     }
-    else if([self isWhitespace:productCategory]== NO){
+    else if(![self isWhitespace:productCategory]){
+        [textFieldProductCategory becomeFirstResponder];
+    }
+    else if(![self isAlphaOnly:productName]){
+        NSLog(@"Only character set allowed in product name.");
+        textFieldProductName.text = @"";
+        [textFieldProductName becomeFirstResponder];
+    }
+    else if(![self isNumericOnly:textFieldProductPrice.text]){
+        NSLog(@"Number ranging from 10 to 99999 and after decimal point only two numbers.");
+        textFieldProductPrice.text = @"";
+        [textFieldProductPrice becomeFirstResponder];
+    }
+    else if(![self isAlphaOnly:productCategory]){
+        NSLog(@"Only character set allowed in product name.");
+        textFieldProductCategory.text = @"";
         [textFieldProductCategory becomeFirstResponder];
     }
     else{
@@ -113,9 +111,4 @@
         [self popViewController];
     }
 }
-
-
 @end
-
-
-
